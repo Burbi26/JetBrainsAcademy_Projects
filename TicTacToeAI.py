@@ -5,6 +5,7 @@ coord = []
 count = [0, 0]
 
 
+#this class includes all the methods for the Tic-Tac-Toe fame
 class Game:
     def init(self):
         global coord
@@ -18,7 +19,8 @@ class Game:
             if x == "X":
                 count[1] += 1
         coord = [[coord[0], coord[1], coord[2]], [coord[3], coord[4], coord[5]], [coord[6], coord[7], coord[8]]]
-
+    
+    #this method prints the current state of the game in the console
     def print_coord(self):
         global coord
         print("""---------
@@ -27,6 +29,7 @@ class Game:
 | {} {} {} |
 ---------""".format(coord[0][0], coord[0][1], coord[0][2], coord[1][0], coord[1][1], coord[1][2], coord[2][0], coord[2][1], coord[2][2]))
 
+    #this method verifies the coordinates of a move and stores the value if it's valid
     def check_coordinates(self, checkInput):
         checkInput = checkInput.split(' ')
         if len(checkInput) > 2:
@@ -51,14 +54,16 @@ class Game:
             coord[checkInput[0] - 1][checkInput[1] - 1] = "O"
             count[0] += 1
         return 1
-
+    
+    #this method takes the user's move
     def user_input(self):
         print("Enter the coordinates:")
         userInput = input()
         while self.check_coordinates(userInput) == 0:
             userInput = input()
         self.print_coord()
-
+    
+    #this method verifies if the game is finished and returns the results
     def check_victory(self):
         global coord
         global count
@@ -88,7 +93,8 @@ class Game:
                 if coord[i][j] == "_":
                     return 0
         return 1
-
+    
+    #this method prints the result of the game in the console
     def print_result(self, result):
         if result == 1:
             print("Draw")
@@ -99,7 +105,8 @@ class Game:
         elif result == 3:
             print("O wins")
             print()
-
+    
+    #this method takes the user's input and tells the main function which type of game to run 
     def check_state(self):
         type = 0
         gameCommand = input("Input command:")
@@ -134,14 +141,16 @@ class Game:
                 print("Bad parameters!")
                 type += 1
                 return type
-
+    
+    #this method runs the easiest computer difficulty which makes random moves
     def easyAI(self):
         print("Making move level \"easy\"")
         easyInput = str(random.randint(1, 3)) + " " + str(random.randint(1, 3))
         while self.check_coordinates(easyInput) == 0:
             easyInput = str(random.randint(1, 3)) + " " + str(random.randint(1, 3))
         self.print_coord()
-
+    
+    #this method rune the intermediate difficulty which wins or denies a win if it can or makes random moves
     def mediumAI(self):
         print("Making move level \"medium\"")
         moveFound = 0
@@ -336,7 +345,8 @@ class Game:
             while self.check_coordinates(mediumInput) == 0:
                 mediumInput = str(random.randint(1, 3)) + " " + str(random.randint(1, 3))
         self.print_coord()
-
+    
+    #this is the maximing method for the MinMax algorithm
     def max(self):
         maxv = -2
         x = None
@@ -359,7 +369,8 @@ class Game:
                         y = j
                     coord[i][j] = "_"
         return maxv, x, y
-
+    
+    #this is the minimizing method for the MinMax algorithm
     def min(self):
         minv = 2
         x = None
@@ -382,7 +393,9 @@ class Game:
                         y = j
                     coord[i][j] = "_"
         return minv, x, y
-
+    
+    #this is the hardest computer difficulty which makes the most optimal move everytime using MinMax algorithm
+    #users can't win at this difficulty, they can only draw or lose
     def hardAI(self, player1):
         print("Making move level \"hard\"")
         if player1 == 4:
@@ -392,7 +405,8 @@ class Game:
             m, row, col = self.max()
             self.check_coordinates(str(row + 1) + " " + str(col + 1))
         self.print_coord()
-
+    
+    #this is the main method for running the game
     def running_game(self, type):
         self.print_coord()
         victory = 0
@@ -422,7 +436,8 @@ class Game:
                 self.print_result(victory)
         self.reset_board()
         return 1
-
+    
+    #this method set the atributes for a new game
     def reset_board(self):
         global coord
         global count
